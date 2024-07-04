@@ -5,11 +5,6 @@
 
 typedef uint32_t u32;
 
-void printarr(char** p) {
-    for (int i = 0; p[i] != NULL; i++) 
-        printf("%s\n ", p[i]);
-}
-
 
 int is_list_empty(char** l) {
     return !l || l[0] == NULL;
