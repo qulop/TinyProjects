@@ -1,3 +1,6 @@
+#ifndef __LOCATEOF_UTILS_H
+#define __LOCATEOF_UTILS_H
+
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
@@ -28,3 +31,5 @@ void free_twodim_char_ptr(char** ptr) {
         free(ptr[i]);
     free(ptr);
 }
+
+#endif

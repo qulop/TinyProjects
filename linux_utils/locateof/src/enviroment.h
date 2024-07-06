@@ -1,3 +1,6 @@
+#ifndef __LOCATEOF_ENVIROMENT_H
+#define __LOCATEOF_ENVIROMENT_H
+
 #include <dirent.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -40,3 +43,5 @@ char** get_path_vars(void) {
 
     return tokens;
 }
+
+#endif
