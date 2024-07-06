@@ -1,1 +1,1 @@
-## Simple(without flags) *whereis* comand analogue
+## Simple analogue for the *whereis* comand(without flags)
