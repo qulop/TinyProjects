@@ -7,7 +7,7 @@
 
 
 // --------- UTILS ---------
-NODE* __alloc_new_node() {
+NODE* __alloc_new_node(void) {
     NODE* n = (NODE*)malloc(sizeof(NODE));
     return n;
 }
@@ -39,6 +39,22 @@ void __add_to_front(NODE* edge, NODE* front, NODE* new) {
 
     __set_node(new, front, edge);
 }
+
+void* __copy_data(void* data, size_t size) {
+    void* new_data = malloc(size);
+    memcpy_s(new_data, size, data, size);
+
+    return new_data;
+}
+
+bool __is_node_present_in_list(LinkedList* list, NODE* node) {
+    NODE* n = list_begin(list);
+
+    for (n; n != list_end(list); n = list_next(n))
+        if (n == node)
+            return true;
+    return false;
+}
 // --------------------
 
 
@@ -57,9 +73,18 @@ struct Node* list_begin(LinkedList* list) {
     return list->edge->next;
 }
 
+struct Node* list_rbegin(LinkedList* list) {
+    return list->edge->prev;
+}
+
 
 struct Node* list_next(struct Node* node) {
     return node->next;
+}
+
+
+struct Node* list_rnext(struct Node* node) {
+    return node->prev;
 }
 
 
@@ -68,12 +93,29 @@ struct Node* list_end(LinkedList* list) {
 }
 
 
+struct Node* list_rend(LinkedList* list) {
+    return list_end(list);
+}
+
+
+struct Node* list_at_index(LinkedList* list, int index) {
+    if (index == -1)
+        return (list->size) ? list->edge->prev : NULL;
+
+    NODE* n = list_begin(list);
+    size_t i = 0;
+
+    for (; n != list_end(list); n = list_next(n), i++)
+        if (i == index)
+            return n;
+
+    return NULL;
+}
+
+
 void list_add(LinkedList* list, void* data, size_t data_size, enum ListDirections direct) {
     NODE* new = __alloc_new_node();
-
-    void* new_data = malloc(data_size);
-    memcpy_s(new_data, data_size, data, data_size);
-    new->data = new_data;
+    new->data = __copy_data(data, data_size);
 
     if (!list->edge) {
         list = __init_edge(list);   // if list created manually(using malloc instead of list_init())
@@ -89,6 +131,34 @@ void list_add(LinkedList* list, void* data, size_t data_size, enum ListDirection
         __add_to_front(edge, edge->next, new);
 
     list->size += 1;
+}
+
+
+bool list_insert_data(LinkedList* list, void* data, size_t data_size, uint32_t index) {
+    NODE* target = list_at_index(list, index);
+    if (!target)
+        return false;
+
+    NODE* new = __alloc_new_node();
+    new->data = __copy_data(data, data_size);
+
+    __add_to_front(target->prev, target, new);
+    return true;
+}
+
+
+bool list_insert_node(LinkedList* list, struct Node* node, uint32_t index) {
+    NODE* target = list_at_index(list, index);
+    if (!target)
+        return false;
+
+    if (__is_node_present_in_list(list, node)) {
+        node->prev->next = node->next;
+        node->next->prev = node->prev;
+    }
+
+    __add_to_front(target->prev, target, node);
+    return true;
 }
 
 
