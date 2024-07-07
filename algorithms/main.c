@@ -1,4 +1,4 @@
-#include <list.h>
+#include <bidir/list.h>
 
 #include <stdlib.h>
 #include <stdio.h>
