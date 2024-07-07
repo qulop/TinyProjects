@@ -1,4 +1,4 @@
-#include "Atomic.h"
+#include "atomic_i64.h"
 
 
 void __atomicStore(AtomicStorage storage, int64_t val)

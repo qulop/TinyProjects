@@ -1,7 +1,6 @@
 extern "C" {
-#include "Atomic.h"
+    #include "impl/atomic_i64.h"
 }
-#include <atomic>
 
 
 // Implementation for int64_t
